@@ -65,6 +65,33 @@ class ProgressBar:
     def __str__(self):
         return str(self.prog_bar)
 
+class Display_Time(object):
+    lasttime = time.time()
+    uptime = 0
+    totalreloads = 0
+    
+    def Reload(self):
+        """Return the number of seconds since the instasiation (or reload)"""
+        seconds = time.time() - self.lasttime
+        self.lasttime = seconds
+        self.Update(seconds)
+        
+        self.totalreloads += 1
+        self.uptime += seconds
+        return seconds
+    
+    def Update(self, seconds):
+        """Update the number of hours, minutes, seconds."""
+        minutes = int(seconds / 60)
+        self.hours = int(minutes / 60)
+        self.seconds = seconds % 60
+        self.minutes = minutes % 60
+    
+    def Load_New_Time(self, timedelta):
+        self.Update(timedelta.total_seconds())
+       
+    def __repr__(self):
+        return "%.2d:%.2d:%.2d" % (self.hours, self.minutes, self.seconds)
 
 class TestProgressBar():
     def __init__(self, itters=800):
